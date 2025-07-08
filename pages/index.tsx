@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import Map from '../components/Map'
+import dynamic from 'next/dynamic'
+
+const Map = dynamic(() => import('../components/Map'), {
+  ssr: false
+})
 import { Bar } from '../types/Bar'
 
 export default function Home() {
