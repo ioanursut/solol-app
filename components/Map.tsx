@@ -106,7 +106,7 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setUserPosition([pos.coords.latitude, pos.coords.longitude])
+          setUserPosition([pos.coords.lat, pos.coords.lng])
         },
         () => {
           setUserPosition([59.3293, 18.0686])
@@ -124,7 +124,7 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
 
   const barsFiltered = bars.filter((bar) => {
     const dist = L.latLng(userPosition[0], userPosition[1]).distanceTo(
-      L.latLng(bar.latitude, bar.longitude)
+      L.latLng(bar.lat, bar.lng)
     )
     const matchesDistance = dist <= radius
     const matchesSun = sunFilter.length === 0 || sunFilter.includes(bar.sun?.toLowerCase())
@@ -190,13 +190,13 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
 
         const isActiveDestination =
           destination &&
-          destination[0] === bar.latitude &&
-          destination[1] === bar.longitude
+          destination[0] === bar.lat &&
+          destination[1] === bar.lng
 
         return (
           <Marker
             key={bar.id}
-            position={[bar.latitude, bar.longitude]}
+            position={[bar.lat, bar.lng]}
             icon={icon}
           >
             <Popup>
@@ -209,12 +209,12 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
               {hasSunNow && '🔆 Sol just nu'}<br />
               📏 Avstånd: {Math.round(
                 L.latLng(userPosition[0], userPosition[1]).distanceTo(
-                  L.latLng(bar.latitude, bar.longitude)
+                  L.latLng(bar.lat, bar.lng)
                 )
               )} meter<br /><br />
               {!isActiveDestination ? (
                 <button
-                  onClick={() => setDestination([bar.latitude, bar.longitude])}
+                  onClick={() => setDestination([bar.lat, bar.lng])}
                   style={{
                     padding: '6px 12px',
                     background: '#3498db',
