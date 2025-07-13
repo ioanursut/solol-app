@@ -92,7 +92,7 @@ function Routing({ from, to }: { from: [number, number]; to: [number, number] })
     routingRef.current = control
 
     return () => {
-      map.removeControl(control)
+      map.removeControl(control as unknown as L.control)
     }
   }, [from, to, map])
 
