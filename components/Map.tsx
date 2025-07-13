@@ -106,7 +106,7 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setUserPosition([pos.coords.lat, pos.coords.lng])
+          setUserPosition([pos.coords.latitude, pos.coords.longitude])
         },
         () => {
           setUserPosition([59.3293, 18.0686])
