@@ -23,7 +23,6 @@ type MapProps = {
   beerFilter: string[]
   sunNearby: boolean
   sunCitywide: boolean
-  maxPrice: number // 👈 NY prop
 }
 
 const createIcon = (price: number) =>
@@ -69,7 +68,7 @@ function Routing({ from, to }: { from: [number, number]; to: [number, number] })
     if (!from || !to || !map) return
 
     if (routingRef.current) {
-      map.removeControl(routingRef.current)
+      map.removeControl(routingRef.current as unknown as L.Control) // <- FIX
     }
 
     const control = L.Routing.control({
@@ -92,14 +91,14 @@ function Routing({ from, to }: { from: [number, number]; to: [number, number] })
     routingRef.current = control
 
     return () => {
-      map.removeControl(control as unknown as L.control)
+      map.removeControl(control as unknown as L.Control) // <- FIX
     }
   }, [from, to, map])
 
   return null
 }
 
-export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, sunCitywide, maxPrice }: MapProps) {
+export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, sunCitywide }: MapProps) {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null)
   const [destination, setDestination] = useState<[number, number] | null>(null)
 
@@ -130,16 +129,15 @@ export default function Map({ bars, radius, sunFilter, beerFilter, sunNearby, su
     const matchesDistance = dist <= radius
     const matchesSun = sunFilter.length === 0 || sunFilter.includes(bar.sun?.toLowerCase())
     const matchesDirection = isDirectionInSun(azimuthDeg, bar.sun_direction)
-    const matchesPrice = bar.price <= maxPrice
 
     if (sunNearby && sunCitywide) {
-      return matchesDirection && matchesPrice
+      return matchesDirection
     } else if (sunNearby) {
-      return matchesDirection && matchesDistance && matchesPrice
+      return matchesDirection && matchesDistance
     } else if (sunCitywide) {
-      return matchesDirection && matchesPrice
+      return matchesDirection
     } else {
-      return matchesDistance && matchesSun && matchesPrice
+      return matchesDistance && matchesSun
     }
   })
 
