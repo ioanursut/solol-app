@@ -1,0 +1,21 @@
+{
+  "name": "Solöl",
+  "short_name": "Solöl",
+  "description": "Hitta billigaste ölen i solen nära dig",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffcc00",
+  "icons": [
+    {
+      "src": "/IMG-4786.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/IMG-4787.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
