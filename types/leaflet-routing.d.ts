@@ -1,4 +1,6 @@
-declare namespace L {
+import 'leaflet'
+
+declare module 'leaflet' {
   namespace Routing {
     class Control {
       constructor(options?: any)
