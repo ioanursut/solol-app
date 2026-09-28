@@ -64,7 +64,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%}
   <div class="logo">LINE</div>
   <div class="sub">Hur exakt är du?</div>
   <button id="play" class="btn">SPELA</button>
-  <div class="version">PROTOTYP v0.2</div>
+  <div class="version">PROTOTYP v0.3</div>
 </div>
 
 <div id="count" class="count">3</div>
@@ -84,7 +84,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%}
 <div id="modal" class="modal">
   <div class="card">
     <h2>Så spelar du</h2>
-    <p>Dra fingret i sidled. Passera mitten av portarna så exakt du kan. Samma bana varje gång.</p>
+    <p>Dra fingret i sidled längst ner på skärmen. Portarna kommer uppifrån. Passera mitten så exakt du kan. Samma bana varje gång.</p>
     <button id="close" class="btn">FATTAR</button>
   </div>
 </div>
@@ -137,7 +137,7 @@ function makeGates(){
   }
   return a;
 }
-function gateY(g,elapsed){return py-((elapsed-g.t)/1800)*H*.92}
+function gateY(g,elapsed){return py+((elapsed-g.t)/1800)*H*.92}
 
 function reset(){
   score=0;perfects=0;streak=0;px=W/2;tx=W/2;gates=makeGates();
@@ -210,7 +210,7 @@ function player(){
 function draw(now){
   bg();
   if(state==='play'){var e=now-startTime;for(var i=0;i<gates.length;i++)drawGate(gates[i],e);ctx.strokeStyle='rgba(233,255,79,.17)';ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(W,py);ctx.stroke();player()}
-  else{var p=makeGates().slice(0,5);for(var j=0;j<p.length;j++){p[j].t=-(j*360);drawGate(p[j],0)}}
+  else{var p=makeGates().slice(0,5);for(var j=0;j<p.length;j++){p[j].t=300+(j*360);drawGate(p[j],0)}}
 }
 function loop(now){update(now);draw(now);requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
