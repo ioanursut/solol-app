@@ -3,48 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#07090d">
-<title>LINE Arena v0.6</title>
+<meta name="theme-color" content="#05070b">
+<title>LINE RUSH v0.7</title>
 <style>
-:root{--bg:#07090d;--fg:#f6f8fb;--muted:#8994a4;--accent:#eaff4f;--cyan:#55e7ff;--pink:#ff5bc8}
+:root{--bg:#05070b;--fg:#f6f8fb;--muted:#8590a1;--lime:#eaff4f;--cyan:#4ee8ff;--red:#ff6171}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:none;overscroll-behavior:none}
 body{position:fixed;inset:0}
-#app{position:relative;width:100%;height:100%;min-height:100dvh;background:#06080c}
-#game{position:absolute;inset:0;width:100%;height:100%;display:block}
-.overlay{position:absolute;inset:0;pointer-events:none}
-.hud{position:absolute;left:0;right:0;top:0;padding:max(16px,env(safe-area-inset-top)) 18px 0;display:flex;justify-content:space-between;z-index:5}
-.hud .box{background:rgba(5,8,13,.54);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px);border-radius:14px;padding:9px 12px;min-width:96px}
-.hud .label{font-size:9px;letter-spacing:.16em;color:var(--muted);font-weight:850;text-transform:uppercase}
-.hud .value{font-size:25px;line-height:1.05;font-weight:950}
-.right{text-align:right}
-.toast{position:absolute;left:50%;top:20%;transform:translate(-50%,-50%) scale(.94);opacity:0;z-index:6;white-space:nowrap;font-size:26px;font-weight:950;text-shadow:0 3px 24px #000;transition:.14s}
-.toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.toastSub{position:absolute;left:50%;top:25%;transform:translateX(-50%);opacity:0;z-index:6;color:#d8dde6;font-size:12px;font-weight:850;letter-spacing:.08em;white-space:nowrap;transition:.14s}
-.toastSub.on{opacity:1}
-.controlWrap{position:absolute;left:0;right:0;bottom:0;height:30%;z-index:7;display:flex;align-items:center;justify-content:center;padding-bottom:max(14px,env(safe-area-inset-bottom));pointer-events:none}
-.control{width:min(72vw,310px);height:min(24vh,190px);border-radius:34px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));backdrop-filter:blur(8px);position:relative;pointer-events:auto;touch-action:none;overflow:hidden}
-.control:before{content:"DRA UPPÅT · RIKTA · SLÄPP";position:absolute;top:14px;left:0;right:0;text-align:center;color:#657181;font-size:10px;font-weight:900;letter-spacing:.14em}
-.pad{position:absolute;left:50%;top:64%;width:66px;height:66px;border-radius:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04)}
-.knob{position:absolute;left:50%;top:64%;width:38px;height:38px;border-radius:50%;transform:translate(-50%,-50%);background:var(--accent);box-shadow:0 0 28px rgba(234,255,79,.5)}
-.power{position:absolute;left:16px;right:16px;bottom:13px;height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
-.power>i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--accent))}
-.screen{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;background:radial-gradient(circle at 50% 35%,rgba(17,24,34,.9),rgba(4,6,9,.96) 62%)}
+#app{position:relative;width:100%;height:100%;min-height:100dvh;background:#05070b}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hidden{display:none!important}
-.logo{font-size:min(24vw,110px);line-height:.8;letter-spacing:-.08em;font-style:italic;font-weight:950;margin:0 0 20px}
-.kicker{font-size:12px;color:var(--cyan);letter-spacing:.18em;font-weight:950;text-transform:uppercase;margin-bottom:10px}
-.title{font-size:21px;font-weight:900;margin-bottom:9px}
-.desc{max-width:350px;color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:30px}
-.btn{border:0;border-radius:20px;background:var(--accent);color:#101309;font-weight:950;font-size:21px;padding:18px 32px;min-width:230px}
+.hud{position:absolute;left:0;right:0;top:0;z-index:6;display:flex;justify-content:space-between;pointer-events:none;padding:max(16px,env(safe-area-inset-top)) 17px 0}
+.box{min-width:96px;padding:9px 12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(4,7,11,.48);backdrop-filter:blur(8px)}
+.label{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.value{font-size:25px;font-weight:950;line-height:1.05}
+.right{text-align:right}
+.centerHud{position:absolute;left:50%;top:max(18px,env(safe-area-inset-top));transform:translateX(-50%);z-index:6;text-align:center;pointer-events:none}
+.centerHud .small{font-size:9px;letter-spacing:.14em;color:#7f8a99;font-weight:900}
+.centerHud .speed{font-size:22px;font-weight:950}
+.toast{position:absolute;left:50%;top:23%;transform:translate(-50%,-50%) scale(.94);z-index:8;opacity:0;white-space:nowrap;font-size:26px;font-weight:950;text-shadow:0 3px 24px #000;transition:.14s}
+.toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.toastSub{position:absolute;left:50%;top:28%;transform:translateX(-50%);z-index:8;opacity:0;color:#d8dde6;font-size:12px;font-weight:850;letter-spacing:.08em;white-space:nowrap}
+.toastSub.on{opacity:1}
+.controlZone{position:absolute;left:0;right:0;bottom:0;height:27%;z-index:7;padding-bottom:max(14px,env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center;touch-action:none}
+.control{width:min(75vw,330px);height:min(20vh,150px);border-radius:34px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.016));backdrop-filter:blur(8px);position:relative;overflow:hidden}
+.control:before{content:"HÅLL · DRA I SIDLED";position:absolute;left:0;right:0;top:13px;text-align:center;color:#647080;font-size:10px;font-weight:900;letter-spacing:.14em}
+.trackLine{position:absolute;left:18px;right:18px;top:67%;height:3px;border-radius:99px;background:rgba(255,255,255,.10)}
+.knob{position:absolute;left:50%;top:67%;width:46px;height:46px;border-radius:50%;transform:translate(-50%,-50%);background:var(--lime);box-shadow:0 0 30px rgba(234,255,79,.44)}
+.edgeWarning{position:absolute;left:50%;bottom:calc(27% + 12px);transform:translateX(-50%);z-index:7;font-size:11px;font-weight:900;letter-spacing:.13em;color:var(--red);opacity:0;transition:.12s;white-space:nowrap}
+.edgeWarning.on{opacity:1}
+.screen{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;background:radial-gradient(circle at 50% 33%,rgba(17,25,36,.93),rgba(3,5,8,.97) 64%)}
+.logo{font-weight:950;font-style:italic;font-size:min(21vw,100px);letter-spacing:-.08em;line-height:.82;margin:0 0 5px}
+.rush{font-size:16px;letter-spacing:.42em;margin-left:.42em;color:var(--cyan);font-weight:950;margin-bottom:22px}
+.title{font-size:22px;font-weight:950;margin-bottom:8px}
+.desc{max-width:355px;color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:30px}
+.btn{border:0;border-radius:20px;background:var(--lime);color:#101309;font-weight:950;font-size:21px;padding:18px 32px;min-width:230px}
 .btn:active{transform:scale(.985)}
 .ghost{margin-top:12px;background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,.13);font-size:14px;padding:12px 18px;min-width:0}
-.version{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));font-size:10px;color:#535e6d;letter-spacing:.12em}
-.resultScore{font-size:min(25vw,112px);font-weight:950;line-height:.9;letter-spacing:-.07em;margin:6px 0 12px}
-.record{height:25px;color:var(--accent);font-weight:950}
-.stats{display:flex;gap:24px;margin:19px 0 31px}
-.stat strong{display:block;font-size:23px}.stat span{display:block;margin-top:3px;color:var(--muted);font-size:9px;letter-spacing:.11em;text-transform:uppercase}
-.count{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(3,5,8,.5);font-size:min(34vw,155px);font-weight:950}
+.version{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));font-size:10px;letter-spacing:.12em;color:#4e5968}
+.count{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(3,5,8,.48);font-size:min(34vw,155px);font-weight:950}
 .count.on{display:flex}
+.resultScore{font-size:min(22vw,102px);font-weight:950;line-height:.9;letter-spacing:-.07em;margin:9px 0 8px}
+.record{height:24px;color:var(--lime);font-weight:950}
+.stats{display:flex;gap:27px;margin:18px 0 31px}
+.stat strong{display:block;font-size:23px}.stat span{display:block;margin-top:3px;color:var(--muted);font-size:9px;letter-spacing:.1em;text-transform:uppercase}
 .help{position:absolute;right:18px;top:max(19px,env(safe-area-inset-top));width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:white;font-weight:950;font-size:19px}
 .modal{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(2,4,6,.94)}
 .modal.on{display:flex}
@@ -56,42 +58,43 @@ body{position:fixed;inset:0}
 <div id="app">
 <canvas id="game"></canvas>
 
-<div id="playUI" class="overlay hidden">
+<div id="playUI" class="hidden">
   <div class="hud">
-    <div class="box"><div class="label">Poäng</div><div id="score" class="value">0</div></div>
-    <div class="box right"><div class="label">Slag</div><div id="shots" class="value">1 / 3</div></div>
+    <div class="box"><div class="label">Tid</div><div id="time" class="value">0.00</div></div>
+    <div class="box right"><div class="label">Apex</div><div id="apex" class="value">0 / 5</div></div>
   </div>
+  <div class="centerHud"><div class="small">FART</div><div id="speed" class="speed">0</div></div>
   <div id="toast" class="toast"></div>
   <div id="toastSub" class="toastSub"></div>
-  <div id="controlWrap" class="controlWrap">
+  <div id="edgeWarning" class="edgeWarning">UTANFÖR LINJEN · TAPPA FART</div>
+  <div class="controlZone">
     <div id="control" class="control">
-      <div class="pad"></div>
+      <div class="trackLine"></div>
       <div id="knob" class="knob"></div>
-      <div class="power"><i id="powerFill"></i></div>
     </div>
   </div>
 </div>
 
 <div id="start" class="screen">
   <button id="help" class="help">?</button>
-  <div class="kicker">Fiktiv precisionssport</div>
   <div class="logo">LINE</div>
-  <div class="title">3 slag. En perfekt linje.</div>
-  <div class="desc">Skicka pucken genom tre portar och in i mål. Använd väggarna om du vill. Bonuszonen ger mer poäng men kostar en svårare linje.</div>
-  <button id="play" class="btn">SPELA</button>
-  <div class="version">ARENA PROTOTYP v0.6</div>
+  <div class="rush">RUSH</div>
+  <div class="title">En bana. En tid att slå.</div>
+  <div class="desc">Automatisk gas. Du styr bara linjen genom kurvorna. Träffa apex för extra fart. Kör du för brett tappar du tid. Samma bana varje gång.</div>
+  <button id="play" class="btn">KÖR</button>
+  <div class="version">RACING PROTOTYP v0.7</div>
 </div>
 
 <div id="count" class="count">3</div>
 
 <div id="result" class="screen hidden">
-  <div class="kicker">Rundan är klar</div>
-  <div id="final" class="resultScore">0</div>
+  <div class="label">Måltid</div>
+  <div id="final" class="resultScore">0.00</div>
   <div id="record" class="record"></div>
   <div class="stats">
-    <div class="stat"><strong id="gates">0/3</strong><span>Portar</span></div>
-    <div class="stat"><strong id="bonus">Nej</strong><span>Bonus</span></div>
-    <div class="stat"><strong id="best">0</strong><span>Personbästa</span></div>
+    <div class="stat"><strong id="apexFinal">0/5</strong><span>Apex</span></div>
+    <div class="stat"><strong id="offroadFinal">0.0 s</strong><span>Utanför</span></div>
+    <div class="stat"><strong id="best">--</strong><span>Personbästa</span></div>
   </div>
   <button id="again" class="btn">FÖRSÖK IGEN</button>
   <button id="back" class="btn ghost">Till start</button>
@@ -100,7 +103,7 @@ body{position:fixed;inset:0}
 <div id="modal" class="modal">
   <div class="card">
     <h2>Så spelar du</h2>
-    <p>Dra den gula kontrollen uppåt. Åt sidan bestämmer riktningen, hur långt du drar bestämmer kraften. Släpp för att skjuta. Pucken fortsätter från där den stannar. Tre slag totalt.</p>
+    <p>Håll tummen i styrfältet längst ner och dra åt vänster eller höger. Bilen gasar själv. Håll dig på banan och skär genom de lysande apex-zonerna för att behålla hög fart. Snabbast tid vinner.</p>
     <button id="close" class="btn">FATTAR</button>
   </div>
 </div>
@@ -110,264 +113,224 @@ body{position:fixed;inset:0}
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.181.1/build/three.module.js';
 
 const canvas=document.getElementById('game');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x06080c);
-scene.fog=new THREE.Fog(0x06080c,16,34);
+scene.background=new THREE.Color(0x05070b);
+scene.fog=new THREE.Fog(0x05070b,18,48);
 
-const camera=new THREE.PerspectiveCamera(48,1,.1,100);
-camera.position.set(0,13.8,14.8);
-camera.lookAt(0,0,-1.2);
+const camera=new THREE.PerspectiveCamera(55,1,.1,100);
 
-const hemi=new THREE.HemisphereLight(0xa5c9ff,0x121318,1.15);
-scene.add(hemi);
-const key=new THREE.DirectionalLight(0xffffff,2.1);
-key.position.set(5,11,7);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
-const rim=new THREE.PointLight(0x55e7ff,26,22);rim.position.set(-6,4,-5);scene.add(rim);
-const rim2=new THREE.PointLight(0xff5bc8,20,18);rim2.position.set(6,3,0);scene.add(rim2);
+scene.add(new THREE.HemisphereLight(0xaacbff,0x0c0d10,1.2));
+const sun=new THREE.DirectionalLight(0xffffff,1.8);sun.position.set(6,14,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+const cyanLight=new THREE.PointLight(0x4ee8ff,30,20);cyanLight.position.set(-7,5,-8);scene.add(cyanLight);
+const pinkLight=new THREE.PointLight(0xff54c7,22,18);pinkLight.position.set(7,4,-20);scene.add(pinkLight);
 
-const floorMat=new THREE.MeshStandardMaterial({color:0x0c1118,roughness:.72,metalness:.28});
-const floor=new THREE.Mesh(new THREE.BoxGeometry(10.8,.35,18.4),floorMat);
-floor.position.y=-.24;floor.receiveShadow=true;scene.add(floor);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(120,120),new THREE.MeshStandardMaterial({color:0x070a0f,roughness:.9,metalness:.08}));
+ground.rotation.x=-Math.PI/2;ground.position.y=-.06;ground.receiveShadow=true;scene.add(ground);
 
-const grid=new THREE.GridHelper(18,18,0x1d2a38,0x151d27);
-grid.position.y=-.055;grid.scale.x=.6;scene.add(grid);
+const curve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0,0,13),
+  new THREE.Vector3(0,0,7),
+  new THREE.Vector3(-3.2,0,2),
+  new THREE.Vector3(-1.0,0,-4),
+  new THREE.Vector3(4.0,0,-9),
+  new THREE.Vector3(2.0,0,-15),
+  new THREE.Vector3(-4.1,0,-20.5),
+  new THREE.Vector3(-2.0,0,-27),
+  new THREE.Vector3(3.7,0,-32),
+  new THREE.Vector3(1.1,0,-38),
+  new THREE.Vector3(0,0,-44)
+],false,'catmullrom',.34);
 
-const railMat=new THREE.MeshStandardMaterial({color:0x28313e,roughness:.35,metalness:.65});
-function rail(x,z,w,d){
-  const m=new THREE.Mesh(new THREE.BoxGeometry(w,.48,d),railMat);
-  m.position.set(x,.12,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return {mesh:m,x,z,w,d};
+const roadHalf=2.18;
+const samples=260;
+const pos=[],idxs=[],edgeL=[],edgeR=[],centerLine=[];
+for(let i=0;i<=samples;i++){
+  const t=i/samples,p=curve.getPointAt(t),tan=curve.getTangentAt(t).normalize();
+  const n=new THREE.Vector3(-tan.z,0,tan.x).normalize();
+  const l=p.clone().addScaledVector(n,roadHalf),r=p.clone().addScaledVector(n,-roadHalf);
+  pos.push(l.x,.01,l.z,r.x,.01,r.z);
+  edgeL.push(l.x,.055,l.z);edgeR.push(r.x,.055,r.z);
+  if(i<samples){const a=i*2,b=a+1,c=a+2,d=a+3;idxs.push(a,b,c,b,d,c)}
 }
-const colliders=[];
-colliders.push(rail(-5.15,0,.45,18.2),rail(5.15,0,.45,18.2),rail(0,-8.85,10.7,.45,0),rail(0,8.85,10.7,.45,0));
+const roadGeo=new THREE.BufferGeometry();
+roadGeo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));roadGeo.setIndex(idxs);roadGeo.computeVertexNormals();
+const roadMat=new THREE.MeshStandardMaterial({color:0x111923,roughness:.72,metalness:.28,side:THREE.DoubleSide});
+const road=new THREE.Mesh(roadGeo,roadMat);road.receiveShadow=true;scene.add(road);
 
-const gateData=[
-  {z:3.7,cx:-.7,opening:3.55,color:0x55e7ff,label:'PORT 1'},
-  {z:-.25,cx:1.15,opening:3.05,color:0xeaff4f,label:'PORT 2'},
-  {z:-4.15,cx:-.35,opening:2.65,color:0xff5bc8,label:'PORT 3'}
+function makeLine(points,color,opacity=1){
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(points,3));
+  const m=new THREE.LineBasicMaterial({color,transparent:opacity<1,opacity});
+  const line=new THREE.Line(g,m);scene.add(line);return line;
+}
+makeLine(edgeL,0x4ee8ff,.9);makeLine(edgeR,0xff54c7,.72);
+
+for(let i=8;i<samples;i+=14){
+  const p=curve.getPointAt(i/samples),tan=curve.getTangentAt(i/samples).normalize(),n=new THREE.Vector3(-tan.z,0,tan.x);
+  const dash=new THREE.Mesh(new THREE.BoxGeometry(.08,.025,1.05),new THREE.MeshBasicMaterial({color:0x637184}));
+  dash.position.set(p.x,.045,p.z);dash.rotation.y=Math.atan2(tan.x,tan.z);scene.add(dash);
+}
+
+const apexDefs=[
+  {t:.18,offset:.86},
+  {t:.35,offset:-.92},
+  {t:.52,offset:.92},
+  {t:.70,offset:-.86},
+  {t:.86,offset:.75}
 ];
-
-function makeGate(g,i){
-  const gapL=g.cx-g.opening/2,gapR=g.cx+g.opening/2;
-  const leftW=(gapL+5.0),rightW=(5.0-gapR);
-  if(leftW>.2)colliders.push(rail(-5+leftW/2,g.z,leftW,.34));
-  if(rightW>.2)colliders.push(rail(gapR+rightW/2,g.z,rightW,.34));
-
-  const em=new THREE.MeshStandardMaterial({color:g.color,emissive:g.color,emissiveIntensity:2.2,roughness:.35});
-  const postG=new THREE.BoxGeometry(.11,.95,.11);
-  const p1=new THREE.Mesh(postG,em),p2=new THREE.Mesh(postG,em);
-  p1.position.set(gapL,.48,g.z);p2.position.set(gapR,.48,g.z);scene.add(p1,p2);
-  const top=new THREE.Mesh(new THREE.BoxGeometry(g.opening,.08,.11),em);
-  top.position.set(g.cx,.95,g.z);scene.add(top);
-  const line=new THREE.Mesh(new THREE.BoxGeometry(g.opening,.015,.07),em);
-  line.position.set(g.cx,-.035,g.z);scene.add(line);
-  g.passed=false;g.perfect=false;g.index=i;g.gapL=gapL;g.gapR=gapR;
-}
-gateData.forEach(makeGate);
-
-const bonus={x:3.55,z:-2.55,r:.72,collected:false};
-const bonusMat=new THREE.MeshStandardMaterial({color:0xffcc4d,emissive:0xffb000,emissiveIntensity:2.6,roughness:.35,metalness:.3});
-const bonusRing=new THREE.Mesh(new THREE.TorusGeometry(bonus.r,.09,12,48),bonusMat);
-bonusRing.rotation.x=Math.PI/2;bonusRing.position.set(bonus.x,.05,bonus.z);scene.add(bonusRing);
-const bonusGlow=new THREE.PointLight(0xffb000,9,5);bonusGlow.position.set(bonus.x,1.0,bonus.z);scene.add(bonusGlow);
-
-const goal={x:0,z:-7.15,r:1.35,reached:false};
-const goalMat=new THREE.MeshStandardMaterial({color:0x17222b,emissive:0x55e7ff,emissiveIntensity:.72,roughness:.25,metalness:.45});
-const goalDisc=new THREE.Mesh(new THREE.CylinderGeometry(goal.r,goal.r,.06,64),goalMat);
-goalDisc.position.set(goal.x,-.015,goal.z);scene.add(goalDisc);
-const rings=[1.0,.65,.28];
-rings.forEach((r,i)=>{
-  const mat=new THREE.MeshStandardMaterial({color:i===2?0xeaff4f:0x55e7ff,emissive:i===2?0xeaff4f:0x55e7ff,emissiveIntensity:i===2?2.3:1.4,roughness:.3});
-  const mesh=new THREE.Mesh(new THREE.TorusGeometry(r,.035,8,48),mat);
-  mesh.rotation.x=Math.PI/2;mesh.position.set(goal.x,.03+i*.002,goal.z);scene.add(mesh);
+apexDefs.forEach((a,i)=>{
+  const p=curve.getPointAt(a.t),tan=curve.getTangentAt(a.t).normalize(),n=new THREE.Vector3(-tan.z,0,tan.x);
+  const x=p.clone().addScaledVector(n,a.offset);
+  const mat=new THREE.MeshStandardMaterial({color:0xeaff4f,emissive:0xeaff4f,emissiveIntensity:2.1,transparent:true,opacity:.72,roughness:.25});
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.035,32),mat);m.position.set(x.x,.04,x.z);scene.add(m);
+  a.pos=x;a.hit=false;a.mesh=m;
 });
 
-const puckMat=new THREE.MeshStandardMaterial({color:0xf4f7fb,emissive:0x9db4c8,emissiveIntensity:.28,metalness:.76,roughness:.2});
-const puck=new THREE.Mesh(new THREE.CylinderGeometry(.31,.31,.16,48),puckMat);
-puck.position.set(0,.12,7.15);puck.castShadow=true;scene.add(puck);
-const puckRing=new THREE.Mesh(new THREE.TorusGeometry(.32,.035,10,40),new THREE.MeshBasicMaterial({color:0xeaff4f}));
-puckRing.rotation.x=Math.PI/2;puckRing.position.y=.095;puck.add(puckRing);
+const finishP=curve.getPointAt(.995),finishT=curve.getTangentAt(.995).normalize(),finishN=new THREE.Vector3(-finishT.z,0,finishT.x);
+for(let i=-5;i<=5;i++){
+  const tile=new THREE.Mesh(new THREE.BoxGeometry(.42,.035,.42),new THREE.MeshBasicMaterial({color:(i%2===0)?0xffffff:0x14171c}));
+  tile.position.copy(finishP).addScaledVector(finishN,i*.42);tile.position.y=.045;scene.add(tile);
+}
 
-const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),new THREE.Vector3(0,.18,0),2.2,0xeaff4f,.35,.22);
-scene.add(arrow);arrow.visible=false;
+const car=new THREE.Group();
+const bodyMat=new THREE.MeshStandardMaterial({color:0x161c24,metalness:.75,roughness:.2});
+const body=new THREE.Mesh(new THREE.BoxGeometry(.72,.22,1.35),bodyMat);body.position.y=.25;body.castShadow=true;car.add(body);
+const nose=new THREE.Mesh(new THREE.BoxGeometry(.52,.12,.55),new THREE.MeshStandardMaterial({color:0xeaff4f,emissive:0x9cad19,emissiveIntensity:.75,metalness:.5,roughness:.25}));
+nose.position.set(0,.28,-.56);car.add(nose);
+const lightMat=new THREE.MeshBasicMaterial({color:0x4ee8ff});
+[-.23,.23].forEach(x=>{const l=new THREE.Mesh(new THREE.BoxGeometry(.12,.06,.04),lightMat);l.position.set(x,.28,-.84);car.add(l)});
+const rearGlow=new THREE.PointLight(0xeaff4f,5,3);rearGlow.position.set(0,.2,.65);car.add(rearGlow);
+scene.add(car);
+
+let state='start',progress=.012,lateral=0,lateralVel=0,input=0,dragging=false,startX=0;
+let raceStart=0,finishTime=0,offroadTime=0,apexHits=0,boostUntil=0,toastUntil=0;
+const BEST='line-rush-v07-best';
 
 const start=document.getElementById('start'),result=document.getElementById('result'),playUI=document.getElementById('playUI'),count=document.getElementById('count');
-const scoreEl=document.getElementById('score'),shotsEl=document.getElementById('shots'),toast=document.getElementById('toast'),toastSub=document.getElementById('toastSub');
-const finalEl=document.getElementById('final'),recordEl=document.getElementById('record'),gatesEl=document.getElementById('gates'),bonusEl=document.getElementById('bonus'),bestEl=document.getElementById('best');
-const control=document.getElementById('control'),knob=document.getElementById('knob'),powerFill=document.getElementById('powerFill');
+const timeEl=document.getElementById('time'),apexEl=document.getElementById('apex'),speedEl=document.getElementById('speed'),toast=document.getElementById('toast'),toastSub=document.getElementById('toastSub'),warning=document.getElementById('edgeWarning');
+const control=document.getElementById('control'),knob=document.getElementById('knob');
+const finalEl=document.getElementById('final'),recordEl=document.getElementById('record'),apexFinal=document.getElementById('apexFinal'),offroadFinal=document.getElementById('offroadFinal'),bestEl=document.getElementById('best');
 
-let state='start',score=0,shots=0,velocity=new THREE.Vector2(0,0),dragging=false,settle=0,toastUntil=0;
-let drag={cx:0,cy:0,x:0,y:0,power:0,dirX:0,dirZ:-1};
-const BEST='line-arena-v06-best';
-const radius=.31;
-let prevZ=puck.position.z;
-let audioCtx=null;
-
-function beep(freq=500,dur=.055,vol=.035){
-  try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.frequency.value=freq;o.type='sine';g.gain.value=vol;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
-  }catch(e){}
-}
 function showToast(a,b='',color='#eaff4f'){
   toast.textContent=a;toast.style.color=color;toast.classList.add('on');
-  toastSub.textContent=b;toastSub.classList.toggle('on',!!b);toastUntil=performance.now()+920;
+  toastSub.textContent=b;toastSub.classList.toggle('on',!!b);toastUntil=performance.now()+820;
 }
 function hideToast(){toast.classList.remove('on');toastSub.classList.remove('on')}
-function resetArena(){
-  score=0;shots=0;velocity.set(0,0);settle=0;
-  puck.position.set(0,.12,7.15);prevZ=puck.position.z;
-  gateData.forEach(g=>{g.passed=false;g.perfect=false});
-  bonus.collected=false;goal.reached=false;
-  scoreEl.textContent='0';shotsEl.textContent='1 / 3';hideToast();arrow.visible=false;
-  resetControl();state='ready';
+function resetRace(){
+  progress=.012;lateral=0;lateralVel=0;input=0;offroadTime=0;apexHits=0;boostUntil=0;
+  apexDefs.forEach(a=>{a.hit=false;a.mesh.material.opacity=.72});
+  timeEl.textContent='0.00';apexEl.textContent='0 / 5';speedEl.textContent='0';warning.classList.remove('on');hideToast();
+  state='race';raceStart=performance.now();
 }
-function countdown(){
+function countdownRace(){
   start.classList.add('hidden');result.classList.add('hidden');playUI.classList.remove('hidden');
   count.classList.add('on');state='count';let n=3;count.textContent='3';
-  const iv=setInterval(()=>{n--;if(n>0)count.textContent=String(n);else if(n===0)count.textContent='KÖR';else{clearInterval(iv);count.classList.remove('on');resetArena()}},570);
-}
-function resetControl(){
-  dragging=false;drag.power=0;powerFill.style.width='0%';knob.style.transform='translate(-50%,-50%)';arrow.visible=false;
-}
-function updateAim(){
-  const rect=control.getBoundingClientRect();
-  const dx=drag.x-drag.cx,dy=drag.cy-drag.y;
-  const max=Math.min(rect.width*.42,115);
-  const len=Math.hypot(dx,dy);
-  drag.power=Math.max(0,Math.min(1,len/max));
-  const forward=Math.max(16,dy);
-  const mag=Math.hypot(dx,forward)||1;
-  drag.dirX=dx/mag;drag.dirZ=-forward/mag;
-  const mx=Math.max(-max,Math.min(max,dx)),my=Math.max(-max,Math.min(max,drag.y-drag.cy));
-  knob.style.transform=`translate(calc(-50% + ${mx}px),calc(-50% + ${my}px))`;
-  powerFill.style.width=(drag.power*100).toFixed(0)+'%';
-  arrow.position.set(puck.position.x,.3,puck.position.z);
-  arrow.setDirection(new THREE.Vector3(drag.dirX,0,drag.dirZ).normalize());
-  arrow.setLength(1.6+drag.power*2.2,.34,.2);arrow.visible=true;
-}
-function fire(){
-  if(state!=='ready'||!dragging||drag.power<.18){resetControl();return}
-  const speed=6.0+drag.power*7.8;
-  velocity.set(drag.dirX*speed,drag.dirZ*speed);
-  shots++;shotsEl.textContent=Math.min(shots+1,3)+' / 3';
-  state='moving';settle=0;prevZ=puck.position.z;resetControl();beep(250,.05,.025);
-}
-function pointInRect(px,pz,c){
-  return px>c.x-c.w/2-radius&&px<c.x+c.w/2+radius&&pz>c.z-c.d/2-radius&&pz<c.z+c.d/2+radius;
-}
-function resolveRect(c){
-  if(!pointInRect(puck.position.x,puck.position.z,c))return false;
-  const left=c.x-c.w/2-radius,right=c.x+c.w/2+radius,top=c.z-c.d/2-radius,bottom=c.z+c.d/2+radius;
-  const dl=Math.abs(puck.position.x-left),dr=Math.abs(right-puck.position.x),dt=Math.abs(puck.position.z-top),db=Math.abs(bottom-puck.position.z);
-  const m=Math.min(dl,dr,dt,db);
-  if(m===dl){puck.position.x=left;velocity.x=-Math.abs(velocity.x)*.76}
-  else if(m===dr){puck.position.x=right;velocity.x=Math.abs(velocity.x)*.76}
-  else if(m===dt){puck.position.z=top;velocity.y=-Math.abs(velocity.y)*.76}
-  else{puck.position.z=bottom;velocity.y=Math.abs(velocity.y)*.76}
-  beep(150,.035,.014);return true;
-}
-function awardGate(g,x){
-  if(g.passed||x<g.gapL||x>g.gapR)return;
-  g.passed=true;
-  const dist=Math.abs(x-g.cx),perfect=dist<Math.max(.24,g.opening*.11);
-  g.perfect=perfect;
-  const pts=perfect?220:120;score+=pts;scoreEl.textContent=score;
-  showToast(perfect?'PERFECT LINE':'CHECKPOINT',`+${pts}`,perfect?'#eaff4f':'#55e7ff');
-  beep(perfect?820:590,.09,.045);
-}
-function checkGates(oldZ,newZ,oldX,newX){
-  gateData.forEach(g=>{
-    if(!g.passed&&oldZ>g.z&&newZ<=g.z){
-      const t=(oldZ-g.z)/Math.max(.0001,oldZ-newZ),x=oldX+(newX-oldX)*t;awardGate(g,x);
-    }
-  });
-}
-function checkBonus(){
-  if(bonus.collected)return;
-  const d=Math.hypot(puck.position.x-bonus.x,puck.position.z-bonus.z);
-  if(d<bonus.r+.18){
-    bonus.collected=true;score+=300;scoreEl.textContent=score;showToast('BONUS LINE','+300','#ffcb4d');beep(980,.12,.05);
-  }
-}
-function checkGoal(){
-  if(goal.reached)return false;
-  const d=Math.hypot(puck.position.x-goal.x,puck.position.z-goal.z);
-  if(d<goal.r){
-    velocity.multiplyScalar(.94);
-    if(velocity.length()<1.35){
-      goal.reached=true;
-      const accuracy=Math.max(0,1-d/goal.r),pts=500+Math.round(accuracy*350);
-      score+=pts;scoreEl.textContent=score;velocity.set(0,0);
-      showToast('MÅL!',`+${pts}`,'#eaff4f');beep(1120,.18,.06);
-      setTimeout(finish,950);return true;
-    }
-  }
-  return false;
+  const iv=setInterval(()=>{n--;if(n>0)count.textContent=n;else if(n===0)count.textContent='KÖR';else{clearInterval(iv);count.classList.remove('on');resetRace()}},560);
 }
 function finish(){
   if(state==='result')return;
-  state='result';playUI.classList.add('hidden');
-  const old=parseInt(localStorage.getItem(BEST)||'0',10),isRecord=score>old,best=Math.max(score,old);
-  if(isRecord)localStorage.setItem(BEST,String(score));
-  finalEl.textContent=String(score);recordEl.textContent=isRecord?'NYTT REKORD':'';
-  gatesEl.textContent=gateData.filter(g=>g.passed).length+'/3';bonusEl.textContent=bonus.collected?'Ja':'Nej';bestEl.textContent=String(best);
+  state='result';finishTime=(performance.now()-raceStart)/1000;playUI.classList.add('hidden');
+  const old=parseFloat(localStorage.getItem(BEST)||'0'),isRecord=!old||finishTime<old,best=isRecord?finishTime:old;
+  if(isRecord)localStorage.setItem(BEST,String(finishTime));
+  finalEl.textContent=finishTime.toFixed(2)+' s';recordEl.textContent=isRecord?'NYTT REKORD':'';
+  apexFinal.textContent=apexHits+'/5';offroadFinal.textContent=offroadTime.toFixed(1)+' s';bestEl.textContent=best?best.toFixed(2)+' s':'--';
   result.classList.remove('hidden');
 }
-function onStopped(){
-  if(goal.reached)return;
-  state='ready';settle=0;
-  if(shots>=3){setTimeout(finish,420);return}
-  shotsEl.textContent=(shots+1)+' / 3';
+function playerFrame(){
+  const p=curve.getPointAt(Math.min(progress,.999)),tan=curve.getTangentAt(Math.min(progress,.999)).normalize(),n=new THREE.Vector3(-tan.z,0,tan.x).normalize();
+  return {p,tan,n};
 }
-function update(dt,now){
-  if(state==='moving'){
-    const oldX=puck.position.x,oldZ=puck.position.z;
-    puck.position.x+=velocity.x*dt;puck.position.z+=velocity.y*dt;
-    colliders.forEach(resolveRect);
-    checkGates(oldZ,puck.position.z,oldX,puck.position.x);
-    checkBonus();
-    if(checkGoal())return;
-    const damp=Math.pow(.976,dt*60);velocity.multiplyScalar(damp);
-    if(velocity.length()<.11){settle+=dt;if(settle>.23){velocity.set(0,0);onStopped()}}else settle=0;
-    prevZ=puck.position.z;
+const tempPos=new THREE.Vector3(),camTarget=new THREE.Vector3(),camPos=new THREE.Vector3();
+function updateCar(now,dt){
+  if(state!=='race')return;
+  const abs=Math.abs(lateral);
+  const off=abs>roadHalf*.92;
+  if(off)offroadTime+=dt;
+  warning.classList.toggle('on',off);
+
+  lateralVel+=input*7.2*dt;
+  lateralVel*=Math.pow(.055,dt);
+  lateral+=lateralVel*dt*3.0;
+  lateral=Math.max(-roadHalf*1.28,Math.min(roadHalf*1.28,lateral));
+
+  const grip=off?.57:1;
+  const boost=now<boostUntil?1.13:1;
+  const base=.0437;
+  progress+=base*grip*boost*dt;
+
+  const f=playerFrame(),p=f.p,tan=f.tan,n=f.n;
+  tempPos.copy(p).addScaledVector(n,lateral);
+  car.position.set(tempPos.x,.05,tempPos.z);
+  const yaw=Math.atan2(tan.x,tan.z);
+  car.rotation.y=yaw-input*.20-lateralVel*.08;
+
+  for(const a of apexDefs){
+    if(!a.hit&&progress>=a.t-.012&&progress<=a.t+.018){
+      const target=a.offset;
+      if(Math.abs(lateral-target)<.52){
+        a.hit=true;a.mesh.material.opacity=.18;apexHits++;apexEl.textContent=apexHits+' / 5';boostUntil=now+1100;
+        showToast('PERFECT APEX','FARTBOOST','#eaff4f');
+      }
+    }
   }
-  if(toastUntil&&now>toastUntil){hideToast();toastUntil=0}
-  bonusRing.rotation.z+=dt*.75;
-  const pulse=1+Math.sin(now*.004)*.06;bonusRing.scale.setScalar(pulse);
+
+  const elapsed=(now-raceStart)/1000;timeEl.textContent=elapsed.toFixed(2);
+  speedEl.textContent=Math.round(125*grip*boost+28);
+
+  camPos.copy(tempPos).addScaledVector(tan,-5.7).add(new THREE.Vector3(0,4.3,0)).addScaledVector(n,lateral*.08);
+  camTarget.copy(tempPos).addScaledVector(tan,5.1).add(new THREE.Vector3(0,.45,0));
+  camera.position.lerp(camPos,1-Math.pow(.001,dt));
+  const look=new THREE.Vector3();look.lerpVectors(camera.userData.look||camTarget,camTarget,1-Math.pow(.002,dt));
+  camera.userData.look=look;camera.lookAt(look);
+
+  if(progress>=.995)finish();
 }
-function resize(){
-  const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+function updateIdle(now){
+  if(state==='start'||state==='result'){
+    const t=.08,p=curve.getPointAt(t),tan=curve.getTangentAt(t).normalize(),n=new THREE.Vector3(-tan.z,0,tan.x);
+    car.position.copy(p).addScaledVector(n,Math.sin(now*.001)*.25);car.position.y=.05;
+    car.rotation.y=Math.atan2(tan.x,tan.z);
+    const cp=p.clone().addScaledVector(tan,-6).add(new THREE.Vector3(0,4.8,0));
+    const ct=p.clone().addScaledVector(tan,5).add(new THREE.Vector3(0,.5,0));
+    camera.position.lerp(cp,.04);camera.lookAt(ct);
+  }
 }
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();
 
-const clock=new THREE.Clock();
-function loop(){
-  const dt=Math.min(.032,clock.getDelta()),now=performance.now();
-  update(dt,now);renderer.render(scene,camera);requestAnimationFrame(loop);
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(.032,(now-last)/1000);last=now;
+  updateCar(now,dt);updateIdle(now);
+  if(toastUntil&&now>toastUntil){hideToast();toastUntil=0}
+  renderer.render(scene,camera);requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 
-function beginDrag(e){
-  if(state!=='ready')return;
-  const r=control.getBoundingClientRect();
-  drag.cx=r.left+r.width/2;drag.cy=r.top+r.height*.64;drag.x=e.clientX;drag.y=e.clientY;dragging=true;if(control.setPointerCapture)control.setPointerCapture(e.pointerId);updateAim();e.preventDefault();
+function startDrag(e){
+  if(state!=='race')return;
+  dragging=true;startX=e.clientX;if(control.setPointerCapture)control.setPointerCapture(e.pointerId);moveDrag(e);e.preventDefault();
 }
-function moveDrag(e){if(!dragging||state!=='ready')return;drag.x=e.clientX;drag.y=e.clientY;updateAim();e.preventDefault()}
-function endDrag(e){if(!dragging)return;fire();if(e)e.preventDefault()}
-control.addEventListener('pointerdown',beginDrag);
+function moveDrag(e){
+  if(!dragging||state!=='race')return;
+  const dx=e.clientX-startX;input=Math.max(-1,Math.min(1,dx/85));
+  knob.style.transform=`translate(calc(-50% + ${input*95}px),-50%)`;e.preventDefault();
+}
+function endDrag(e){
+  dragging=false;input=0;knob.style.transform='translate(-50%,-50%)';if(e)e.preventDefault();
+}
+control.addEventListener('pointerdown',startDrag);
 control.addEventListener('pointermove',moveDrag);
 control.addEventListener('pointerup',endDrag);
-control.addEventListener('pointercancel',()=>resetControl());
+control.addEventListener('pointercancel',endDrag);
 
-document.getElementById('play').onclick=countdown;
-document.getElementById('again').onclick=countdown;
+document.getElementById('play').onclick=countdownRace;
+document.getElementById('again').onclick=countdownRace;
 document.getElementById('back').onclick=()=>{result.classList.add('hidden');start.classList.remove('hidden');state='start'};
 document.getElementById('help').onclick=()=>document.getElementById('modal').classList.add('on');
 document.getElementById('close').onclick=()=>document.getElementById('modal').classList.remove('on');
