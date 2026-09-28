@@ -136,7 +136,7 @@ const floor=new THREE.Mesh(new THREE.BoxGeometry(10.8,.35,18.4),floorMat);
 floor.position.y=-.24;floor.receiveShadow=true;scene.add(floor);
 
 const grid=new THREE.GridHelper(18,18,0x1d2a38,0x151d27);
-grid.position.y=-.055;grid.rotation.z=Math.PI/2;grid.scale.x=.6;scene.add(grid);
+grid.position.y=-.055;grid.scale.x=.6;scene.add(grid);
 
 const railMat=new THREE.MeshStandardMaterial({color:0x28313e,roughness:.35,metalness:.65});
 function rail(x,z,w,d){
@@ -357,7 +357,7 @@ requestAnimationFrame(loop);
 function beginDrag(e){
   if(state!=='ready')return;
   const r=control.getBoundingClientRect();
-  drag.cx=r.left+r.width/2;drag.cy=r.top+r.height*.64;drag.x=e.clientX;drag.y=e.clientY;dragging=true;updateAim();e.preventDefault();
+  drag.cx=r.left+r.width/2;drag.cy=r.top+r.height*.64;drag.x=e.clientX;drag.y=e.clientY;dragging=true;if(control.setPointerCapture)control.setPointerCapture(e.pointerId);updateAim();e.preventDefault();
 }
 function moveDrag(e){if(!dragging||state!=='ready')return;drag.x=e.clientX;drag.y=e.clientY;updateAim();e.preventDefault()}
 function endDrag(e){if(!dragging)return;fire();if(e)e.preventDefault()}
